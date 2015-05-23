@@ -19,14 +19,18 @@ window.addEventListener("touchend",function(e){
 function Thumb(){
 	this.x = 0;
 	this.y =0;
-	//this.checkTouchButton(){
-
-	//}
+	this.checkTouchButton = function(){
+		for(var i=0;i<buttons.length;i++)if(distance(this,button[i])<button[i].radius)return i;
+	}
 }
 function Button(){
-	this.x = canvas.width/2;
-	this.y = canvas.height/2;
-	this.radius = 5;
+	this.x = canvas.width/2;//button y position
+	this.y = canvas.height/2;//button x position
+	this.vx = 0;//velocity x
+	this.vy = 0;//velocity y
+	this.ax = 0;//acceleration x
+	this.ay = 0;//acceleration y
+	this.radius = 5;//button radius
 }
 
 //functions
@@ -56,12 +60,16 @@ function game(){
 }
 
 function update(){
-	//buttons.map(function(e){
-
-	//})
+	buttons.map(function(e){
+		e.vx+=e.ax;
+		e.vy+=e.ay;
+		e.x+=e.vx;
+		e.y+=e.vy;
+	})
 }
 
 function render(){
+	c.clearRect(0,0,canvas.width,canvas.height);
 	buttons.map(function(e){
 		c.fillRect(e.x,e.y,e.radius*2,e.radius*2);
 	})
