@@ -2,6 +2,7 @@ canvas = document.getElementsByTagName("canvas")[0];
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 c = canvas.getContext("2d")
+c.font = "20px Georgia";
 
 thumbs = [];
 
@@ -43,6 +44,7 @@ function distance(obj1,obj2){
 function start(){
 	thumbs = [];
 	buttons = [];
+	score = 0;
 
 	thumbs.push(new Thumb());
 	buttons.push(new Button());
@@ -63,6 +65,7 @@ function render(){
 	buttons.map(function(e){
 		c.fillRect(e.x,e.y,e.radius*2,e.radius*2);
 	})
+	c.fillText(score,25,25);
 }
 
 start()
