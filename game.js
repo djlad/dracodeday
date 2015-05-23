@@ -5,6 +5,7 @@ c = canvas.getContext("2d")
 c.font = "bolder 30px courier new";
 
 thumbs = [];
+document.body.style.overflow = 'hidden';
 
 window.addEventListener("touchmove",function(e){
 	updateThumbs(e);
@@ -20,7 +21,11 @@ function Thumb(){
 	this.x = 0;
 	this.y =0;
 	this.checkTouchButton = function(){
-		for(var i=0;i<buttons.length;i++)if(distance(this,button[i])<button[i].radius)return i;
+		var array=[];
+		for(var i=0;i<buttons.length;i++){
+			if(distance(this,buttons[i])<buttons[i].radius)array.push(i);
+		}
+		return array;
 	}
 }
 function Button(){
@@ -30,10 +35,15 @@ function Button(){
 	this.vy = 0;//velocity y
 	this.ax = 0;//acceleration x
 	this.ay = 0;//acceleration y
-	this.radius = 5;//button radius
+	this.radius = 25;//button radius
 }
 
 //functions
+function updateScore(){
+	var array = thumbs[0].checkTouchButton();
+	if(array.length>0)score++;
+}
+
 function updateThumbs(e){
 	for(var i=0;i<thumbs.length;i++){
 		thumbs[i].x = e.changedTouches[i].clientX;
@@ -60,6 +70,7 @@ function game(){
 }
 
 function update(){
+	updateScore();
 	buttons.map(function(e){
 		e.vx+=e.ax;
 		e.vy+=e.ay;
@@ -71,7 +82,7 @@ function update(){
 function render(){
 	c.clearRect(0,0,canvas.width,canvas.height);
 	buttons.map(function(e){
-		c.fillRect(e.x,e.y,e.radius*2,e.radius*2);
+		c.fillRect(e.x-e.radius,e.y-e.radius,e.radius*2,e.radius*2);
 	})
 	c.fillText(score,25,25);
 }
