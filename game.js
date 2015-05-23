@@ -3,6 +3,13 @@ canvas.width = 500;
 canvas.height = 800;
 c = canvas.getContext("2d")
 
+
+
+
+
+
+
+/*
 //classes
 function Player(x,y){
 	this.x = x;
@@ -63,4 +70,4 @@ platforms.push(new Platform(10,100,100));
 
 
 
-setInterval(game,1000/60);
+setInterval(game,1000/60);*/
