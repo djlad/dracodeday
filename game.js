@@ -1,14 +1,72 @@
 canvas = document.getElementsByTagName("canvas")[0];
-canvas.width = 500;
-canvas.height = 800;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 c = canvas.getContext("2d")
 
+thumbs = [];
 
+window.addEventListener("touchmove",function(e){
+	updateThumbs(e);
+})
+window.addEventListener("touchstart",function(e){
+	updateThumbs(e);
+})
+window.addEventListener("touchend",function(e){
+	updateThumbs(e);
+})
+//classes
+function Thumb(){
+	this.x = 0;
+	this.y =0;
+	//this.checkTouchButton(){
 
+	//}
+}
+function Button(){
+	this.x = canvas.width/2;
+	this.y = canvas.height/2;
+	this.radius = 5;
+}
 
+//functions
+function updateThumbs(e){
+	for(var i=0;i<thumbs.length;i++){
+		thumbs[i].x = e.changedTouches[i].clientX;
+		thumbs[i].y = e.changedTouches[i].clientY;
+	}
+}
+function distance(obj1,obj2){
+	return Math.sqrt(Math.pow(obj1.x-obj2.x,2)+Math.pow(obj1.y-obj2.y,2));
+}
 
+//startup code
+function start(){
+	thumbs = [];
+	buttons = [];
 
+	thumbs.push(new Thumb());
+	buttons.push(new Button());
+}
 
+function game(){
+	update();
+	render();
+}
+
+function update(){
+	//buttons.map(function(e){
+
+	//})
+}
+
+function render(){
+	buttons.map(function(e){
+		c.fillRect(e.x,e.y,e.radius*2,e.radius*2);
+	})
+}
+
+start()
+setInterval(game,1000/60);
 /*
 //classes
 function Player(x,y){
