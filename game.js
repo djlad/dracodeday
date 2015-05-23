@@ -77,6 +77,18 @@ function update(){
 		e.x+=e.vx;
 		e.y+=e.vy;
 	})
+
+	if(Math.random()>.99 )randommove();
+
+
+	if(buttons[0].x<0)buttons[0].vx=Math.abs(buttons[0].vx)
+
+    if(buttons[0].y<0)buttons[0].vy=Math.abs(buttons[0].vy)
+    if(buttons[0].x>canvas.width)buttons[0].vx=-Math.abs(buttons[0].vx)
+    if(buttons[0].y>canvas.height)buttons[0].vy=-Math.abs(buttons[0].vy)
+
+
+
 }
 
 function render(){
@@ -87,8 +99,45 @@ function render(){
 	c.fillText(score,25,25);
 }
 
+
+function randommove(){
+
+buttons[0].vx=Math.random()*6-3
+
+buttons[0].vy=Math.random()*6-3
+
+
+}
+
+
+
+
+
+
+
+
 start()
 setInterval(game,1000/60);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 //classes
 function Player(x,y){
