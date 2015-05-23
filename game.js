@@ -2,7 +2,7 @@ canvas = document.getElementsByTagName("canvas")[0];
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 c = canvas.getContext("2d")
-c.font = "20px Georgia";
+c.font = "bolder 30px courier new";
 
 thumbs = [];
 
