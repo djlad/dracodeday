@@ -69,6 +69,12 @@ window.addEventListener("touchend",function(e){
     e.stopPropagation && e.stopPropagation();
     e.cancelBubble = true;
     e.returnValue = false;
+
+
+    if(ended==1)
+    	ended++ ;
+    if(ended==2)restart();
+    
     return false;
 })
 //classes
@@ -103,7 +109,7 @@ function Button(){
 function restart(){
 	console.log("restarts")
 	start();
-	location.reload();	
+	//location.reload();	
 }
 
 function endGame(){
@@ -111,8 +117,7 @@ function endGame(){
 	setTimeout(function(){
 		c.fillText("Play again?",canvas.width/2,canvas.height/2);
 		c.fillText("Final Score: "+ score,canvas.width/2,canvas.height/2-40);
-		window.addEventListener("touchend",restart)
-		
+		ended++;
 
 	},100)
 
@@ -143,7 +148,7 @@ function checkMaxSpeed(){
 
 //startup code
 function start(){
-
+	ended = false;
 	thumbs = [];
 	buttons = [];
 	score = 0;
@@ -212,7 +217,7 @@ function renderHS(){
 	}
 	tmpArray.sort(sortNumber);
 	for(var i=0;i<tmpArray.length;i++){
-		c.fillText(i+": "+tmpArray[i].name+": "+tmpArray[i].score,canvas.width-220,50*(i+1))
+		c.fillText(i+": "+tmpArray[i].name+": "+tmpArray[i].score,canvas.width/2,50*(i+1))
 	}
 }
 
