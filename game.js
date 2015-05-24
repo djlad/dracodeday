@@ -3,8 +3,16 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 c = canvas.getContext("2d")
 c.font = "bolder 30px courier new";
-
+radius = 150;
+pause = false;
+started = false;
 thumbs = [];
+buttons = [];
+score = 0;
+thumbs.push(new Thumb());
+buttons.push(new Button());
+pushed = false;
+moveRandom = true;
 document.body.style.overflow = 'hidden';
 
 var buttonImage = new Image();
@@ -15,20 +23,42 @@ buttonImagePushed.src = "player1pushed.png";
 
 window.addEventListener("touchmove",function(e){
 	updateThumbs(e);
+
+    var e = event || window.event;
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
 })
 window.addEventListener("touchstart",function(e){
 	updateThumbs(e);
+	pause = false;
+
+    var e = event || window.event;
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
 })
 window.addEventListener("touchend",function(e){
 	//updateThumbs(e);
 	thumbs[0].x = -100;
 	thumbs[0].y=-100;
 	pushed = false;
+
+    var e = event || window.event;
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
 })
 //classes
 function Thumb(){
-	this.x = 0;
-	this.y =0;
+	this.x = canvas.width/2+radius+2;
+	this.y =canvas.height/2;
 	this.checkTouchButton = function(){
 		var array=[];
 		for(var i=0;i<buttons.length;i++){
@@ -38,6 +68,7 @@ function Thumb(){
 			}else{
 				pushed = false
 			}
+			if (distance(this,buttons[i])>buttons[i].radius+30)endGame();
 		}
 		return array;
 	}
@@ -49,10 +80,28 @@ function Button(){
 	this.vy = 0;//velocity y
 	this.ax = 0;//acceleration x
 	this.ay = 0;//acceleration y
-	this.radius = 50;//button radius
+	this.radius = radius;//button radius
 }
 
 //functions
+function restart(){
+	console.log("restarts")
+	start();
+	location.reload();	
+}
+
+function endGame(){
+	clearInterval(gameInterval);
+	setTimeout(function(){
+		c.fillText("Play again?",canvas.width/2,canvas.height/2);
+		c.fillText("Final Score: "+ score,canvas.width/2,canvas.height/2-40);
+		window.addEventListener("touchend",restart)
+		
+
+	},100)
+
+}
+
 function updateScore(){
 	var array = thumbs[0].checkTouchButton();
 	if(array.length>0)score++;
@@ -75,19 +124,26 @@ function checkMaxSpeed(){
 
 //startup code
 function start(){
+
 	thumbs = [];
 	buttons = [];
 	score = 0;
-
-	thumbs.push(new Thumb());
 	buttons.push(new Button());
+	thumbs.push(new Thumb());
+	
 	pushed = false;
 	moveRandom = true;
+
+	gameInterval = setInterval(game,1000/60);
+	game();
+	pause = true;
 }
 
 function game(){
-	update();
-	render();
+	if(!pause){
+		update();
+		render();
+	}
 }
 
 function update(){
@@ -137,13 +193,15 @@ function randommove(){
 
 
 
+buttonImage.onload = function(){
+	start();
+}
 
 
 
 
 
-start()
-setInterval(game,1000/60);
+
 
 
 

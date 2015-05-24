@@ -5,5 +5,26 @@
 	}
 </style>
 
-<canvas></canvas>
+<body onload = "init()">
+<canvas id = "can"></canvas>
 <script type="text/javascript" src = "game.js"></script>
+
+<script>
+    function absorbEvent_(event) {
+      var e = event || window.event;
+      e.preventDefault && e.preventDefault();
+      e.stopPropagation && e.stopPropagation();
+      e.cancelBubble = true;
+      e.returnValue = false;
+      return false;
+    }
+
+    function preventLongPressMenu(node) {
+      node.ontouchcancel = absorbEvent_;
+    }
+
+    function init() {
+      preventLongPressMenu(document.getElementById('can'));
+    }
+</script>
+</body>

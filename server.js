@@ -8,6 +8,12 @@ app.get('/', function(req, res){
 app.get('/game.js', function(req, res){
   res.sendfile('game.js');
 });
+app.get('/player1.png', function(req, res){
+  res.sendfile('player1.png');
+});
+app.get('/player1pushed.png', function(req, res){
+  res.sendfile('player1pushed.png');
+});
 
 io.on('connection', function(socket){
 	socket.on("hello",function(d){
