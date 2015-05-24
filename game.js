@@ -212,7 +212,7 @@ function renderHS(){
 	}
 	tmpArray.sort(sortNumber);
 	for(var i=0;i<tmpArray.length;i++){
-		c.fillText(tmpArray[i].name+": "+tmpArray[i].score,canvas.width-150,50*i)
+		c.fillText(i+": "+tmpArray[i].name+": "+tmpArray[i].score,canvas.width-220,50*(i+1))
 	}
 }
 
