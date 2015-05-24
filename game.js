@@ -1,8 +1,24 @@
+//sockets first
+var socket = io();
+function sortNumber(a,b) {
+    return b.score-a.score ;
+}
+
+socket.on("hsl2client",function(highscores){
+	hsl = highscores;
+	//hsl.sort(sortNumber)
+});
+
+function sendScore(){
+	socket.emit("score2server",{name:name,score:score})
+}
+hsl = {};
 canvas = document.getElementsByTagName("canvas")[0];
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 c = canvas.getContext("2d")
 c.font = "bolder 30px courier new";
+name = prompt("what is your name?"); 
 radius = 150;
 pause = false;
 started = false;
@@ -104,7 +120,10 @@ function endGame(){
 
 function updateScore(){
 	var array = thumbs[0].checkTouchButton();
-	if(array.length>0)score++;
+	if(array.length>0){
+		score+=(1-distance(thumbs[0],buttons[0])/radius)*10;
+	}
+
 }
 
 function updateThumbs(e){
@@ -165,9 +184,10 @@ function update(){
     if(buttons[0].y>canvas.height)buttons[0].vy=-Math.abs(buttons[0].vy)
 
 
+    sendScore();
 
 }
-
+var counter =0;
 function render(){
 	c.clearRect(0,0,canvas.width,canvas.height);
 	buttons.map(function(e){
@@ -178,9 +198,23 @@ function render(){
 			c.drawImage(buttonImage,e.x-e.radius/2,e.y-e.radius/2,e.radius,e.radius);
 	})
 	c.fillText(score,25,25);
+	counter = 0;
+
+	renderHS();
+
 }
 
-
+function renderHS(){
+	tmpArray = [];
+	for(i in hsl){
+		tmpArray.push(hsl[i]);
+		counter++;
+	}
+	tmpArray.sort(sortNumber);
+	for(var i=0;i<tmpArray.length;i++){
+		c.fillText(tmpArray[i].name+": "+tmpArray[i].score,canvas.width-150,50*i)
+	}
+}
 
 function randommove(){
 
