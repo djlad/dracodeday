@@ -31,6 +31,9 @@ pushed = false;
 moveRandom = true;
 document.body.style.overflow = 'hidden';
 
+//resources
+var newHighscore = new Audio("fkudanny.mp3");
+
 var buttonImage = new Image();
 buttonImage.src = "player1.png";
 
@@ -148,6 +151,7 @@ function checkMaxSpeed(){
 
 //startup code
 function start(){
+	lastHighScore = "heojasdp";
 	ended = false;
 	thumbs = [];
 	buttons = [];
@@ -210,7 +214,7 @@ function render(){
 }
 
 function renderHS(){
-	tmpArray = [];
+	var tmpArray = [];
 	for(i in hsl){
 		tmpArray.push(hsl[i]);
 		counter++;
@@ -218,6 +222,12 @@ function renderHS(){
 	tmpArray.sort(sortNumber);
 	for(var i=0;i<tmpArray.length;i++){
 		c.fillText(i+": "+tmpArray[i].name+": "+tmpArray[i].score,canvas.width/2,50*(i+1))
+	}
+
+	//check if new highscore
+	if(tmpArray[0].id !== lastHighScore){
+		lastHighScore = tmpArray[0].id;
+		newHighscore.play();
 	}
 }
 
