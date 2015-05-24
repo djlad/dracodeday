@@ -7,6 +7,12 @@ c.font = "bolder 30px courier new";
 thumbs = [];
 document.body.style.overflow = 'hidden';
 
+var buttonImage = new Image();
+buttonImage.src = "player1.png";
+
+var buttonImagePushed = new Image();
+buttonImagePushed.src = "player1pushed.png";
+
 window.addEventListener("touchmove",function(e){
 	updateThumbs(e);
 })
@@ -14,7 +20,10 @@ window.addEventListener("touchstart",function(e){
 	updateThumbs(e);
 })
 window.addEventListener("touchend",function(e){
-	updateThumbs(e);
+	//updateThumbs(e);
+	thumbs[0].x = -100;
+	thumbs[0].y=-100;
+	pushed = false;
 })
 //classes
 function Thumb(){
@@ -23,7 +32,12 @@ function Thumb(){
 	this.checkTouchButton = function(){
 		var array=[];
 		for(var i=0;i<buttons.length;i++){
-			if(distance(this,buttons[i])<buttons[i].radius)array.push(i);
+			if(distance(this,buttons[i])<buttons[i].radius){
+				array.push(i);
+				pushed = true;
+			}else{
+				pushed = false
+			}
 		}
 		return array;
 	}
@@ -35,7 +49,7 @@ function Button(){
 	this.vy = 0;//velocity y
 	this.ax = 0;//acceleration x
 	this.ay = 0;//acceleration y
-	this.radius = 25;//button radius
+	this.radius = 50;//button radius
 }
 
 //functions
@@ -54,6 +68,11 @@ function distance(obj1,obj2){
 	return Math.sqrt(Math.pow(obj1.x-obj2.x,2)+Math.pow(obj1.y-obj2.y,2));
 }
 
+function checkMaxSpeed(){
+	if(buttons[0].vx>2)buttons[0].ax=0;
+		if(buttons[0].vy>2)buttons[0].ay=0;
+}
+
 //startup code
 function start(){
 	thumbs = [];
@@ -62,6 +81,8 @@ function start(){
 
 	thumbs.push(new Thumb());
 	buttons.push(new Button());
+	pushed = false;
+	moveRandom = true;
 }
 
 function game(){
@@ -78,7 +99,7 @@ function update(){
 		e.y+=e.vy;
 	})
 
-	if(Math.random()>.99 )randommove();
+	if(moveRandom == true &&Math.random()>.99)randommove();
 
 
 	if(buttons[0].x<0)buttons[0].vx=Math.abs(buttons[0].vx)
@@ -94,17 +115,22 @@ function update(){
 function render(){
 	c.clearRect(0,0,canvas.width,canvas.height);
 	buttons.map(function(e){
-		c.fillRect(e.x-e.radius,e.y-e.radius,e.radius*2,e.radius*2);
+		if(pushed){
+			c.drawImage(buttonImagePushed,e.x-e.radius/2,e.y-e.radius/2,e.radius,e.radius)
+		}
+		else
+			c.drawImage(buttonImage,e.x-e.radius/2,e.y-e.radius/2,e.radius,e.radius);
 	})
 	c.fillText(score,25,25);
 }
 
 
+
 function randommove(){
 
-buttons[0].vx=Math.random()*6-3
+	buttons[0].ax=Math.random()*.1-.05
 
-buttons[0].vy=Math.random()*6-3
+	buttons[0].ay=Math.random()*.1-.05
 
 
 }
