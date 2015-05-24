@@ -21,7 +21,6 @@ io.on('connection', function(socket){
 	socket.on("score2server",function(d){
 		d.id = socket.id;
 		highScoreList[socket.id] = d;
-		console.log(highScoreList);
 		socket.broadcast.emit("hsl2client",highScoreList);
 		socket.emit("hsl2client",highScoreList);
 	});
